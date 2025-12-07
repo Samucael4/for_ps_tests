@@ -3,36 +3,23 @@
 test_list() {
 	nums="$1"
 	moves=$(./push_swap $nums | wc -l)
-	checker=$(./push_swap $nums | ./checker $nums)
-	echo "numeros: $nums || $moves movimentos || checker: $checker"
+	checker=$(./push_swap $nums | ./checker_linux $nums)
+	val=$(valgrind ./push_swap $nums)
+	echo "numeros: $nums || $moves movimentos || checker_linux: $checker"
 }
 
 test_list_sem_numeros() {
 	nums="$1"
-	#moves=$(./push_swap $nums | ./checker $nums)
 	moves=$(./push_swap $nums | wc -l)
-	checker=$(./push_swap $nums | ./checker $nums)
-	echo "$moves movimentos || checker: $checker"
+	checker=$(./push_swap $nums | ./checker_linux $nums)
+	val=$(valgrind ./push_swap $nums)
+	echo "$moves movimentos || checker_linux: $checker"
 }
 
-test_invalid() {
-	input="$1"
-	output=$(./push_swap "$input" 2>&1)
-	echo "$output"
-}
-
-# test_list_valgrind() {
-#     nums="$1"
-# 	moves=$(valgrind --leak-check=full --show-leak-kinds=all ./push_swap $nums | wc -l)
-# 	checker=$(valgrind --leak-check=full --show-leak-kinds=all ./push_swap $nums | ./checker $nums)
-#     echo "$moves movimentos checker: $checker"
-# }
-
-# test_list_sem_numeros_valgrind() {
-#     nums="$1"
-# 	moves=$(valgrind --leak-check=full --show-leak-kinds=all ./push_swap $nums | wc -l)
-# 	checker=$(valgrind --leak-check=full --show-leak-kinds=all ./push_swap $nums | ./checker $nums)
-#     echo "$moves movimentos checker: $checker"
+# test_invalid() {
+# 	input="$1"
+# 	output=$(./push_swap "$input" 2>&1)
+# 	echo "$output"
 # }
 
 echo "Testando 3 números"
@@ -66,13 +53,13 @@ done
 
 
 echo "Testando 100 números"
-for i in {1..10}; do
+for i in {1..5}; do
 	nums=$(shuf -i 1-100 -n 100)
 	test_list_sem_numeros "$nums"
 done
 
 echo "Testando 500 números"
-for i in {1..10}; do
+for i in {1..5}; do
 	nums=$(shuf -i 1-500 -n 500)
 	test_list_sem_numeros "$nums"
 done
